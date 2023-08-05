@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ProductListService {
 
-    List<ProductListResponse> getAllProducts(ProductListRequest request);
+   List<ProductListResponse> getAllProducts(ProductListRequest request);
 }

@@ -2,9 +2,11 @@ package com.desierto.ecommerce.product.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Getter
 @Setter
+@CrossOrigin("http://localhost:4200")
 public class ProductListRequest {
 
     private Long id;
