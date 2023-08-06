@@ -1,6 +1,7 @@
 package com.desierto.ecommerce.product.controller;
 
 import com.desierto.ecommerce.product.request.ProductListRequest;
+import com.desierto.ecommerce.product.request.ProductSearchRequest;
 import com.desierto.ecommerce.product.response.ProductListResponse;
 import com.desierto.ecommerce.product.service.ProductListService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,12 @@ public class ProductListController {
     @PostMapping("/productById")
     public ResponseEntity<List<ProductListResponse>> getProductByCategoryId(@RequestBody ProductListRequest request){
         return new ResponseEntity<>(productListService.getAllProducts(request), HttpStatus.OK);
+    }
+
+    @CrossOrigin("http://localhost:4200")
+    @PostMapping("/search")
+    public ResponseEntity<List<ProductListResponse>> searchProductByKeyword(@RequestBody ProductSearchRequest request){
+        return new ResponseEntity<>(productListService.searchProductByKeyword(request), HttpStatus.OK);
     }
 
 

@@ -2,6 +2,7 @@ package com.desierto.ecommerce.product.service;
 
 import com.desierto.ecommerce.product.repository.ProductRepository;
 import com.desierto.ecommerce.product.request.ProductListRequest;
+import com.desierto.ecommerce.product.request.ProductSearchRequest;
 import com.desierto.ecommerce.product.response.ProductListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -21,5 +22,12 @@ public class ProductListServiceImpl implements ProductListService {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
         return productRepository.findProductById_Named(request.getId(), pageable);
+    }
+
+    @Override
+    public List<ProductListResponse> searchProductByKeyword(ProductSearchRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+
+        return productRepository.findProductByKeyword_Named(request.getKeyword());
     }
 }

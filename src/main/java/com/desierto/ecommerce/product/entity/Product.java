@@ -10,12 +10,21 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @NamedNativeQuery(name = "Product.findProductById_Named",
-        query = "SELECT p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice FROM product p WHERE p.category_id = :id",
+        query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice FROM product p WHERE p.category_id = :id",
         resultSetMapping = "Mapping.ProductListResponse")
+
+@NamedNativeQuery(name = "Product.findProductByKeyword_Named",
+        query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice FROM product p " +
+                "WHERE p.name " +
+                "LIKE CONCAT('%', :keyword, '%')",
+        resultSetMapping = "Mapping.ProductListResponse")
+
 
 @SqlResultSetMapping(name = "Mapping.ProductListResponse",
         classes = @ConstructorResult(targetClass = ProductListResponse.class,
-                columns = {@ColumnResult(name = "imageUrl"),
+                columns = {
+                        @ColumnResult(name="id", type = Long.class),
+                        @ColumnResult(name = "imageUrl"),
                         @ColumnResult(name = "name"),
                         @ColumnResult(name = "unitPrice")
                 }))
