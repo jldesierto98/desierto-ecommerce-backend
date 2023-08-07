@@ -1,6 +1,6 @@
 package com.desierto.ecommerce.product.entity;
 
-import com.desierto.ecommerce.product.response.ProductListResponse;
+import com.desierto.ecommerce.product.response.ProductResponse;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,24 +9,29 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@NamedNativeQuery(name = "Product.findProductById_Named",
-        query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice FROM product p WHERE p.category_id = :id",
-        resultSetMapping = "Mapping.ProductListResponse")
+@NamedNativeQuery(name = "Product.findProductByCategory_Named",
+        query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice, p.description FROM product p WHERE p.category_id = :id",
+        resultSetMapping = "Mapping.ProductResponse")
 
 @NamedNativeQuery(name = "Product.findProductByKeyword_Named",
         query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice FROM product p " +
                 "WHERE p.name " +
                 "LIKE CONCAT('%', :keyword, '%')",
-        resultSetMapping = "Mapping.ProductListResponse")
+        resultSetMapping = "Mapping.ProductResponse")
+
+@NamedNativeQuery(name = "Product.findByProductId_Named",
+        query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice, p.description FROM product p WHERE p.id = :id",
+        resultSetMapping = "Mapping.ProductResponse")
 
 
-@SqlResultSetMapping(name = "Mapping.ProductListResponse",
-        classes = @ConstructorResult(targetClass = ProductListResponse.class,
+@SqlResultSetMapping(name = "Mapping.ProductResponse",
+        classes = @ConstructorResult(targetClass = ProductResponse.class,
                 columns = {
                         @ColumnResult(name="id", type = Long.class),
                         @ColumnResult(name = "imageUrl"),
                         @ColumnResult(name = "name"),
-                        @ColumnResult(name = "unitPrice")
+                        @ColumnResult(name = "unitPrice"),
+                        @ColumnResult(name = "description")
                 }))
 
 

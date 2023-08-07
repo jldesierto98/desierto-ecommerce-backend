@@ -1,7 +1,7 @@
 package com.desierto.ecommerce.product.repository;
 
 import com.desierto.ecommerce.product.entity.Product;
-import com.desierto.ecommerce.product.response.ProductListResponse;
+import com.desierto.ecommerce.product.response.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,11 +14,16 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200")
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    //find by category ID
     @Query(nativeQuery = true)
-    List<ProductListResponse> findProductById_Named(@Param("id") Long id, Pageable pageable);
+    List<ProductResponse> findProductByCategory_Named(@Param("id") Long id, Pageable pageable);
+
+    //find by product ID
+    @Query(nativeQuery = true)
+    ProductResponse findByProductId_Named(@Param("id") Long id);
 
     @Query(nativeQuery = true)
-    List<ProductListResponse> findProductByKeyword_Named(@Param("keyword") String keyword);
+    List<ProductResponse> findProductByKeyword_Named(@Param("keyword") String keyword);
 
     Page<Product> findByCategoryId(@Param("id") Long id, Pageable pageable);
     Page<Product> findByNameContaining(@Param("name") String name, Pageable pageable);

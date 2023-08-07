@@ -3,7 +3,7 @@ package com.desierto.ecommerce.product.service;
 import com.desierto.ecommerce.product.repository.ProductRepository;
 import com.desierto.ecommerce.product.request.ProductListRequest;
 import com.desierto.ecommerce.product.request.ProductSearchRequest;
-import com.desierto.ecommerce.product.response.ProductListResponse;
+import com.desierto.ecommerce.product.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,16 +18,21 @@ public class ProductListServiceImpl implements ProductListService {
     private final ProductRepository productRepository;
 
     @Override
-    public List<ProductListResponse> getAllProducts(ProductListRequest request) {
+    public List<ProductResponse> getAllProducts(ProductListRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
-        return productRepository.findProductById_Named(request.getId(), pageable);
+        return productRepository.findProductByCategory_Named(request.getId(), pageable);
     }
 
     @Override
-    public List<ProductListResponse> searchProductByKeyword(ProductSearchRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+    public List<ProductResponse> searchProductByKeyword(ProductSearchRequest request) {
+//        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
         return productRepository.findProductByKeyword_Named(request.getKeyword());
+    }
+
+    @Override
+    public ProductResponse getProductByProductId(Long id) {
+        return productRepository.findByProductId_Named(id);
     }
 }
