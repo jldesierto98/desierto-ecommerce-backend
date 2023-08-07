@@ -37,6 +37,4 @@ public class ProductListRequest {
     public void setSize(Integer size){
         this.size = size;
     }
-
-
 }

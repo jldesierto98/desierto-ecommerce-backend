@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @NamedNativeQuery(name = "Product.findProductByCategory_Named",
-        query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice FROM product p WHERE p.category_id = :id",
+        query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice, p.description FROM product p WHERE p.category_id = :id",
         resultSetMapping = "Mapping.ProductResponse")
 
 @NamedNativeQuery(name = "Product.findProductByKeyword_Named",
@@ -31,7 +31,7 @@ import java.util.Date;
                         @ColumnResult(name = "imageUrl"),
                         @ColumnResult(name = "name"),
                         @ColumnResult(name = "unitPrice"),
-                        @ColumnResult(name = "description", type = String.class)
+                        @ColumnResult(name = "description")
                 }))
 
 
