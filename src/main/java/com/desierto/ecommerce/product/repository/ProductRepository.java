@@ -23,7 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     ProductResponse findByProductId_Named(@Param("id") Long id);
 
     @Query(nativeQuery = true)
-    List<ProductResponse> findProductByKeyword_Named(@Param("keyword") String keyword);
+    List<ProductResponse> findProductByKeyword_Named(@Param("keyword") String keyword, Pageable pageable);
 
     Page<Product> findByCategoryId(@Param("id") Long id, Pageable pageable);
     Page<Product> findByNameContaining(@Param("name") String name, Pageable pageable);
