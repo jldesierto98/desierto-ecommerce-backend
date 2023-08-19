@@ -26,9 +26,10 @@ public class ProductListServiceImpl implements ProductListService {
 
     @Override
     public List<ProductResponse> searchProductByKeyword(ProductSearchRequest request) {
-//        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
 
-        return productRepository.findProductByKeyword_Named(request.getKeyword());
+
+        return productRepository.findProductByKeyword_Named(request.getKeyword(), pageable);
     }
 
     @Override

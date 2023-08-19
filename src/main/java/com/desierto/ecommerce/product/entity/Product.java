@@ -14,7 +14,7 @@ import java.util.Date;
         resultSetMapping = "Mapping.ProductResponse")
 
 @NamedNativeQuery(name = "Product.findProductByKeyword_Named",
-        query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice FROM product p " +
+        query = "SELECT p.id, p.image_url as imageUrl, p.name as name, p.unit_price as unitPrice, p.description as description FROM product p " +
                 "WHERE p.name " +
                 "LIKE CONCAT('%', :keyword, '%')",
         resultSetMapping = "Mapping.ProductResponse")

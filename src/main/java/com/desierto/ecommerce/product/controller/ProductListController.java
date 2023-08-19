@@ -29,6 +29,7 @@ public class ProductListController {
         return new ResponseEntity<>(productListService.searchProductByKeyword(request), HttpStatus.OK);
     }
 
+    @CrossOrigin("http://localhost:4200")
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> viewDetails(@PathVariable("id") Long id){
         return new ResponseEntity<>(productListService.getProductByProductId(id), HttpStatus.OK);
