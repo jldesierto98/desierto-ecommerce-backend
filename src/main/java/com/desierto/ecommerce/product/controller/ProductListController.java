@@ -1,7 +1,9 @@
 package com.desierto.ecommerce.product.controller;
 
+import com.desierto.ecommerce.product.request.AddToCartRequest;
 import com.desierto.ecommerce.product.request.ProductListRequest;
 import com.desierto.ecommerce.product.request.ProductSearchRequest;
+import com.desierto.ecommerce.product.response.AddToCartResponse;
 import com.desierto.ecommerce.product.response.ProductResponse;
 import com.desierto.ecommerce.product.service.ProductListService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +36,12 @@ public class ProductListController {
     public ResponseEntity<ProductResponse> viewDetails(@PathVariable("id") Long id){
         return new ResponseEntity<>(productListService.getProductByProductId(id), HttpStatus.OK);
     }
+
+    @CrossOrigin("http://localhost:4200")
+    @PostMapping("/{id}")
+    public ResponseEntity<AddToCartResponse> addToCart(@PathVariable("id") Long id){
+        return new ResponseEntity<>(productListService.addToCart(id), HttpStatus.CREATED);
+    }
+
 
 }
