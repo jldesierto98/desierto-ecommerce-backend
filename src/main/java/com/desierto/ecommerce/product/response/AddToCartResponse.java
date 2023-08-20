@@ -1,7 +1,7 @@
 package com.desierto.ecommerce.product.response;
 
-
-import com.desierto.ecommerce.product.entity.Product;
+import com.desierto.ecommerce.vo.ProductInCartVo;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +13,6 @@ import java.util.List;
 public class AddToCartResponse {
 
     private BigDecimal totalPrice;
-    private Integer quantity;
-    private List<Product> products;
+    private Integer totalQuantity;
+    private List<ProductInCartVo> products;
 }
