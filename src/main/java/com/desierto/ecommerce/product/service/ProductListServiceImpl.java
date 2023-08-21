@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,73 +54,48 @@ public class ProductListServiceImpl implements ProductListService {
 
     @Override
     public AddToCartResponse addToCart(Long id) {
-
-
         Optional<Product> getProductById = productRepository.findById(id);
 
-        //If product is not found, throw this custom error.
         if (getProductById.isEmpty()) {
             throw new ProductNotFoundException(id);
         }
 
-        totalPrice = BigDecimal.ZERO;
-        final int ADD_ONE_TO_CART = 1;
-        AddToCartResponse addToCartResponse = new AddToCartResponse();
-        ProductInCartVo productInCart = new ProductInCartVo();
-        boolean productAlreadyInCart = false;
-        addToCartCounter++;
-
         Product product = getProductById.get();
 
+        addToCartCounter++;
 
-        //build productInCart
+        ProductInCartVo productInCart = new ProductInCartVo();
         productInCart.setId(product.getId());
         productInCart.setName(product.getName());
         productInCart.setUnitPrice(product.getUnitPrice());
-        productInCart.setQuantityInCart(ADD_ONE_TO_CART);
+        productInCart.setQuantityInCart(1);
         productInCart.setSubTotalPrice(product.getUnitPrice());
 
-        //build subtotal price and quantityInCart
-        //check if the product added in cart is already added in cart before.
-        for(ProductInCartVo tempProductInCart : productsInCart){
+        Map<Long, ProductInCartVo> cartMap = productsInCart.stream()
+                .collect(Collectors.toMap(ProductInCartVo::getId, p -> p));
 
-            if(tempProductInCart.getId().equals(product.getId())){
-                productAlreadyInCart = true;
-                break;
-            }
-
-        }
-
-
-        //if yes, then increment quantity in cart and compute subTotal.
-        if(productAlreadyInCart){
-
-            for(ProductInCartVo productInCartExisting : productsInCart){
-
-                if(productInCartExisting.getId().equals(product.getId())){
-
-                    productInCartExisting.setQuantityInCart(productInCartExisting.getQuantityInCart() + 1);
-
-                    productInCartExisting.setSubTotalPrice(productInCartExisting.getUnitPrice()
-                            .multiply(BigDecimal.valueOf(productInCartExisting.getQuantityInCart())));
-                }
-
-            }
-
-        }else{
+        ProductInCartVo existingProductInCart = cartMap.get(product.getId());
+        if (existingProductInCart != null) {
+            existingProductInCart.setQuantityInCart(existingProductInCart.getQuantityInCart() + 1);
+            existingProductInCart.setSubTotalPrice(existingProductInCart.getUnitPrice()
+                    .multiply(BigDecimal.valueOf(existingProductInCart.getQuantityInCart())));
+        } else {
             productsInCart.add(productInCart);
         }
 
-        for(ProductInCartVo productSubTotal : productsInCart){
-            totalPrice = totalPrice.add(productSubTotal.getSubTotalPrice());
-        }
+        totalPrice = productsInCart.stream()
+                .map(ProductInCartVo::getSubTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-
+        AddToCartResponse addToCartResponse = new AddToCartResponse();
         addToCartResponse.setProducts(productsInCart);
         addToCartResponse.setTotalPrice(totalPrice);
         addToCartResponse.setTotalQuantity(addToCartCounter);
 
+        log.info("=======_______ CART STATUS : |TOTAL PRICE = " + addToCartResponse.getTotalPrice()
+                + "| TOTAL QUANTITY = " + addToCartResponse.getTotalQuantity());
+
         return addToCartResponse;
     }
-
 }
+
