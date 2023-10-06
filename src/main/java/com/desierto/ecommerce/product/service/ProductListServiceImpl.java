@@ -5,7 +5,7 @@ import com.desierto.ecommerce.product.entity.Product;
 import com.desierto.ecommerce.product.repository.ProductRepository;
 import com.desierto.ecommerce.product.request.ProductListRequest;
 import com.desierto.ecommerce.product.request.ProductSearchRequest;
-import com.desierto.ecommerce.product.response.AddToCartResponse;
+import com.desierto.ecommerce.product.response.CartResponse;
 import com.desierto.ecommerce.product.response.ProductResponse;
 import com.desierto.ecommerce.vo.ProductInCartVo;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,8 +25,8 @@ public class ProductListServiceImpl implements ProductListService {
 
     private final ProductRepository productRepository;
     private List<ProductInCartVo> productsInCart = new ArrayList<>(); //temporary storage
-    private int addToCartCounter = 0;
-    private BigDecimal totalPrice;
+    CartResponse cartResponse = new CartResponse();
+    int totalQuantity = 0;
 
 
     @Override
@@ -53,8 +50,9 @@ public class ProductListServiceImpl implements ProductListService {
     }
 
     @Override
-    public AddToCartResponse addToCart(Long id) {
+    public CartResponse addToCart(Long id) {
         Optional<Product> getProductById = productRepository.findById(id);
+        BigDecimal totalPrice;
 
         if (getProductById.isEmpty()) {
             throw new ProductNotFoundException(id);
@@ -62,7 +60,6 @@ public class ProductListServiceImpl implements ProductListService {
 
         Product product = getProductById.get();
 
-        addToCartCounter++;
 
         ProductInCartVo productInCart = new ProductInCartVo();
         productInCart.setId(product.getId());
@@ -70,6 +67,7 @@ public class ProductListServiceImpl implements ProductListService {
         productInCart.setUnitPrice(product.getUnitPrice());
         productInCart.setQuantityInCart(1);
         productInCart.setSubTotalPrice(product.getUnitPrice());
+        productInCart.setImageUrl(product.getImageUrl());
 
         Map<Long, ProductInCartVo> cartMap = productsInCart.stream()
                 .collect(Collectors.toMap(ProductInCartVo::getId, p -> p));
@@ -87,15 +85,76 @@ public class ProductListServiceImpl implements ProductListService {
                 .map(ProductInCartVo::getSubTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        AddToCartResponse addToCartResponse = new AddToCartResponse();
-        addToCartResponse.setProducts(productsInCart);
-        addToCartResponse.setTotalPrice(totalPrice);
-        addToCartResponse.setTotalQuantity(addToCartCounter);
+        //count the total quantity of items in cart.
+        int quantityAfterIncrement = productsInCart.stream()
+                .mapToInt(ProductInCartVo::getQuantityInCart)
+                .sum();
 
-        log.info("=======_______ CART STATUS : |TOTAL PRICE = " + addToCartResponse.getTotalPrice()
-                + "| TOTAL QUANTITY = " + addToCartResponse.getTotalQuantity());
+        cartResponse.setProducts(productsInCart);
+        cartResponse.setTotalPrice(totalPrice);
+        cartResponse.setTotalQuantity(quantityAfterIncrement);
 
-        return addToCartResponse;
+        log.info("=======_______ CART STATUS : |TOTAL PRICE = " + cartResponse.getTotalPrice()
+                + "| TOTAL QUANTITY = " + cartResponse.getTotalQuantity());
+
+        return cartResponse;
     }
+
+    @Override
+    public CartResponse decrementQuantity(Long id) {
+
+        Optional<Product> getProductById = productRepository.findById(id);
+
+
+        if (getProductById.isEmpty()) {
+            throw new ProductNotFoundException(id);
+        }
+
+
+        for(ProductInCartVo tempProductInCart : productsInCart){
+
+            if(Objects.equals(tempProductInCart.getId(), id)){
+
+
+                //if the quantity reaches zero, do not allow negative value.
+                if(tempProductInCart.getQuantityInCart() <= 0){
+                    tempProductInCart.setQuantityInCart(0);
+                    tempProductInCart.setSubTotalPrice(tempProductInCart.getUnitPrice()
+                            .multiply(BigDecimal.valueOf(tempProductInCart.getQuantityInCart())));
+
+
+                }else{
+
+                    tempProductInCart.setQuantityInCart(tempProductInCart.getQuantityInCart() - 1);
+                    tempProductInCart.setSubTotalPrice(tempProductInCart.getUnitPrice()
+                            .multiply(BigDecimal.valueOf(tempProductInCart.getQuantityInCart())));
+
+                }
+
+
+
+
+            }
+
+
+        }
+
+
+
+
+        BigDecimal totalPrice  = productsInCart.stream()
+                .map(ProductInCartVo::getSubTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        int quantityAfterDecrement = productsInCart.stream()
+                .mapToInt(ProductInCartVo::getQuantityInCart)
+                .sum();
+
+        cartResponse.setTotalQuantity(quantityAfterDecrement);
+        cartResponse.setTotalPrice(totalPrice);
+
+        return cartResponse;
+    }
+
 }
 
