@@ -81,14 +81,10 @@ public class ProductListServiceImpl implements ProductListService {
             productsInCart.add(productInCart);
         }
 
-        totalPrice = productsInCart.stream()
-                .map(ProductInCartVo::getSubTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        totalPrice = getTotalPriceInCart();
 
         //count the total quantity of items in cart.
-        int quantityAfterIncrement = productsInCart.stream()
-                .mapToInt(ProductInCartVo::getQuantityInCart)
-                .sum();
+        int quantityAfterIncrement = getTotalQuantityOfItemsInCart();
 
         cartResponse.setProducts(productsInCart);
         cartResponse.setTotalPrice(totalPrice);
@@ -132,28 +128,33 @@ public class ProductListServiceImpl implements ProductListService {
                 }
 
 
-
-
             }
-
 
         }
 
+        BigDecimal totalPrice  = getTotalPriceInCart();
 
-
-
-        BigDecimal totalPrice  = productsInCart.stream()
-                .map(ProductInCartVo::getSubTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        int quantityAfterDecrement = productsInCart.stream()
-                .mapToInt(ProductInCartVo::getQuantityInCart)
-                .sum();
+        int quantityAfterDecrement = getTotalQuantityOfItemsInCart();
 
         cartResponse.setTotalQuantity(quantityAfterDecrement);
         cartResponse.setTotalPrice(totalPrice);
 
         return cartResponse;
+    }
+
+
+    //COUNTS THE TOTAL QUANTITY OF ITEMS IN THE CART - HELPER METHOD
+    private int getTotalQuantityOfItemsInCart() {
+        return productsInCart.stream()
+                .mapToInt(ProductInCartVo::getQuantityInCart)
+                .sum();
+    }
+
+    //COUNTS THE TOTAL PRICE OF ALL ITEMS IN THE CART - HELPER METHOD
+    private BigDecimal getTotalPriceInCart() {
+        return productsInCart.stream()
+                .map(ProductInCartVo::getSubTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 }
