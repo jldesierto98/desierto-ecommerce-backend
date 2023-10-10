@@ -18,7 +18,7 @@ public interface ProductListService {
    /**
     *
     * @param id
-    * @return AddToCartResponse
+    * @return CartResponse
     * This API handles the add to cart function for an item (based on id) which calculates
     * total quantity, total price, and the product details inside the cart.
     *
@@ -29,9 +29,18 @@ public interface ProductListService {
    /**
     *
     * @param id
-    * @return AddToCartResponse
+    * @return CartResponse
     *
     * This API handles the decrement quantity of an item.
     */
    CartResponse decrementQuantity(Long id);
+
+   /**
+    *
+    * @param id
+    * @return List<CartResponse>
+    * This method removes an item from a cart using item id.
+    */
+   CartResponse removeFromCart(Long id);
+
 }
