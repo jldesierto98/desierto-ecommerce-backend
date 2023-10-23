@@ -18,4 +18,5 @@ public class ApplicationExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+
 }

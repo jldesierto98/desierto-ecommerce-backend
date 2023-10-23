@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -98,50 +99,81 @@ public class ProductListServiceImpl implements ProductListService {
 
     @Override
     public CartResponse decrementQuantity(Long id) {
-
         Optional<Product> getProductById = productRepository.findById(id);
-
 
         if (getProductById.isEmpty()) {
             throw new ProductNotFoundException(id);
         }
 
+        // Create an iterator to safely remove elements
+        Iterator<ProductInCartVo> iterator = productsInCart.iterator();
 
-        for(ProductInCartVo tempProductInCart : productsInCart){
+        while (iterator.hasNext()) {
+            ProductInCartVo tempProductInCart = iterator.next();
 
-            if(Objects.equals(tempProductInCart.getId(), id)){
-
-
-                //if the quantity reaches zero, do not allow negative value.
-                if(tempProductInCart.getQuantityInCart() <= 0){
+            if (Objects.equals(tempProductInCart.getId(), id)) {
+                // If the quantity reaches zero, do not allow negative value.
+                if (tempProductInCart.getQuantityInCart() <= 0) {
                     tempProductInCart.setQuantityInCart(0);
                     tempProductInCart.setSubTotalPrice(tempProductInCart.getUnitPrice()
                             .multiply(BigDecimal.valueOf(tempProductInCart.getQuantityInCart())));
-
-
-                }else{
-
+                } else {
                     tempProductInCart.setQuantityInCart(tempProductInCart.getQuantityInCart() - 1);
                     tempProductInCart.setSubTotalPrice(tempProductInCart.getUnitPrice()
                             .multiply(BigDecimal.valueOf(tempProductInCart.getQuantityInCart())));
-
                 }
-
-
             }
 
+            if (tempProductInCart.getQuantityInCart() == 0) {
+                // Safely remove the item from the collection using the iterator
+                iterator.remove();
+            }
         }
 
-        BigDecimal totalPrice  = getTotalPriceInCart();
-
+        BigDecimal totalPrice = getTotalPriceInCart();
         int quantityAfterDecrement = getTotalQuantityOfItemsInCart();
 
         cartResponse.setTotalQuantity(quantityAfterDecrement);
         cartResponse.setTotalPrice(totalPrice);
-
+        log.info("======= DECREMENT ITEM ID : ======== " + id);
         return cartResponse;
     }
 
+
+    @Override
+    public CartResponse removeFromCart(Long id) {
+        Optional<Product> getProductById = productRepository.findById(id);
+
+        if (getProductById.isEmpty()) {
+            throw new ProductNotFoundException(id);
+        }
+
+        int index = IntStream.range(0, productsInCart.size())
+                .filter(i -> Objects.equals(productsInCart.get(i).getId(), id))
+                .findFirst()
+                .orElse(-1);
+
+
+
+        log.info("========ITEM ID REMOVED FROM CART======= " + id);
+
+         productsInCart.remove(index);
+
+        BigDecimal totalPrice = getTotalPriceInCart();
+        int totalQuantityAfterRemove = this.getTotalQuantityOfItemsInCart();
+
+         cartResponse.setTotalQuantity(totalQuantityAfterRemove);
+         cartResponse.setTotalPrice(totalPrice);
+         cartResponse.setProducts(productsInCart);
+
+         return cartResponse;
+
+    }
+
+    @Override
+    public CartResponse getCartItems() {
+        return cartResponse;
+    }
 
     //COUNTS THE TOTAL QUANTITY OF ITEMS IN THE CART - HELPER METHOD
     private int getTotalQuantityOfItemsInCart() {

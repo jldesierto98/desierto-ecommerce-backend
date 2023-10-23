@@ -44,10 +44,22 @@ public class ProductListController {
 
     @CrossOrigin("http://localhost:4200")
     @PostMapping("/decrement/{id}")
-    public ResponseEntity<CartResponse> incrementQuantity(@PathVariable("id") Long id){
+    public ResponseEntity<CartResponse> decrementQuantity(@PathVariable("id") Long id){
         return new ResponseEntity<>(productListService.decrementQuantity(id), HttpStatus.OK);
     }
 
+    @CrossOrigin("http://localhost:4200")
+    @PostMapping("/remove/{id}")
+    public ResponseEntity<CartResponse> removeItemFromCart(@PathVariable("id") Long id){
+        return new ResponseEntity<>(productListService.removeFromCart(id), HttpStatus.CREATED);
+    }
+
+
+    //will modift this soon to get cart items of a certain user.
+    @GetMapping("/cart")
+    public ResponseEntity<CartResponse> getCartItems(){
+        return new ResponseEntity<>(productListService.getCartItems(), HttpStatus.OK);
+    }
 
 
 
