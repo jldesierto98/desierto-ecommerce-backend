@@ -7,6 +7,9 @@ import com.desierto.ecommerce.product.response.ProductResponse;
 
 import java.util.List;
 
+/**
+ * @Author Joshua L. Desierto
+ */
 public interface ProductListService {
 
    List<ProductResponse> getAllProducts(ProductListRequest request);
@@ -42,5 +45,13 @@ public interface ProductListService {
     * This method removes an item from a cart using item id.
     */
    CartResponse removeFromCart(Long id);
+
+   /**
+    *
+    * @return CartResponse
+    * Will modify soon to get cart of a specific user.
+    */
+   CartResponse getCartItems();
+
 
 }

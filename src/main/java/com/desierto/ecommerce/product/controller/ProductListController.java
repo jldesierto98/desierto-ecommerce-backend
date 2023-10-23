@@ -55,5 +55,12 @@ public class ProductListController {
     }
 
 
+    //will modift this soon to get cart items of a certain user.
+    @GetMapping("/cart")
+    public ResponseEntity<CartResponse> getCartItems(){
+        return new ResponseEntity<>(productListService.getCartItems(), HttpStatus.OK);
+    }
+
+
 
 }

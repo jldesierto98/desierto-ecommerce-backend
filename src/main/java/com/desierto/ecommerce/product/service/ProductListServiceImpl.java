@@ -170,6 +170,11 @@ public class ProductListServiceImpl implements ProductListService {
 
     }
 
+    @Override
+    public CartResponse getCartItems() {
+        return cartResponse;
+    }
+
     //COUNTS THE TOTAL QUANTITY OF ITEMS IN THE CART - HELPER METHOD
     private int getTotalQuantityOfItemsInCart() {
         return productsInCart.stream()
