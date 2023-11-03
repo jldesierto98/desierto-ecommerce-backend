@@ -11,6 +11,6 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200")
 @Repository
 public interface StateRepository extends JpaRepository<State, Long> {
-
+    @CrossOrigin("http://localhost:4200")
     List<State> findByCountryId(Long id);
 }
