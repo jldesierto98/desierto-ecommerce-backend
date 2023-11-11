@@ -2,6 +2,9 @@ package com.desierto.ecommerce.product.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -44,9 +47,11 @@ public class Orders {
     @Column(name = "status")
     private String status;
 
+    @CreationTimestamp
     @Column(name = "date_created")
     private Date dateCreated;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Date lastUpdated;
 

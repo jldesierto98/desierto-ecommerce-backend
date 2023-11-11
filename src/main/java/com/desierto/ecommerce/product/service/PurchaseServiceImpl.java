@@ -42,6 +42,9 @@ public class PurchaseServiceImpl implements PurchaseService{
 
         customerRepository.save(customer);
 
+        log.info("========Order Items ======== : " + orderItemSet);
+        log.info("=======Customer======== : " + customer);
+        log.info("============Order========= : " + order);
         return PurchaseResponse.builder()
                 .orderTrackingNumber(orderTrackingNumber)
                 .build();
