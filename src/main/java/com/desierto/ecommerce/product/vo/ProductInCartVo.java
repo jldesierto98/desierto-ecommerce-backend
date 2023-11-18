@@ -1,4 +1,4 @@
-package com.desierto.ecommerce.vo;
+package com.desierto.ecommerce.product.vo;
 
 
 import lombok.AllArgsConstructor;

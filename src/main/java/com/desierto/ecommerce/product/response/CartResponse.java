@@ -1,6 +1,6 @@
 package com.desierto.ecommerce.product.response;
 
-import com.desierto.ecommerce.vo.ProductInCartVo;
+import com.desierto.ecommerce.product.vo.ProductInCartVo;
 import lombok.Getter;
 import lombok.Setter;
 

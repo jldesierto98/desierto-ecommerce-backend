@@ -7,7 +7,7 @@ import com.desierto.ecommerce.product.request.ProductListRequest;
 import com.desierto.ecommerce.product.request.ProductSearchRequest;
 import com.desierto.ecommerce.product.response.CartResponse;
 import com.desierto.ecommerce.product.response.ProductResponse;
-import com.desierto.ecommerce.vo.ProductInCartVo;
+import com.desierto.ecommerce.product.vo.ProductInCartVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +27,6 @@ public class ProductListServiceImpl implements ProductListService {
     private final ProductRepository productRepository;
     private List<ProductInCartVo> productsInCart = new ArrayList<>(); //temporary storage
     CartResponse cartResponse = new CartResponse();
-    int totalQuantity = 0;
 
 
     @Override
