@@ -16,12 +16,12 @@ import java.util.List;
 public class StateController {
 
     private final StateService stateService;
-    @CrossOrigin("http://localhost:4200")
+
     @GetMapping("/all")
     public ResponseEntity<List<State>> getAllState(){
         return new ResponseEntity<>(stateService.getAllStates(), HttpStatus.OK);
     }
-    @CrossOrigin("http://localhost:4200")
+
     @PostMapping("/{countryId}")
     public ResponseEntity<List<State>> getByCountryCode(@PathVariable("countryId") Long countryId){
         return new ResponseEntity<>(stateService.getByCountryCode(countryId), HttpStatus.OK);

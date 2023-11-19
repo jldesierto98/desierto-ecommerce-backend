@@ -12,15 +12,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/country")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class CountryController {
 
     private final CountryService countryService;
-    @CrossOrigin("http://localhost:4200")
+
     @GetMapping("/all")
     public ResponseEntity<List<Country>> getAllCountries(){
         return new ResponseEntity<>(countryService.getAllCountry(), HttpStatus.OK);
     }
-    @CrossOrigin("http://localhost:4200")
+
     @PostMapping("/{countryCode}")
     public ResponseEntity<List<Country>> getCountryByCountryCode(@PathVariable("countryCode") String countryCode){
         return new ResponseEntity<>(countryService.getAllCountryByCountryCode(countryCode), HttpStatus.OK);

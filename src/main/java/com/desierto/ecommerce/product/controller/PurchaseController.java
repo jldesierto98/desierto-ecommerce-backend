@@ -16,7 +16,7 @@ public class PurchaseController {
 
     private final PurchaseService purchaseService;
 
-    @CrossOrigin("http://localhost:4200")
+
     @PostMapping("/buy")
     public ResponseEntity<PurchaseResponse> purchaseProduct(@RequestBody PurchaseRequest purchaseRequest){
         return new ResponseEntity<>(purchaseService.purchaseProduct(purchaseRequest), HttpStatus.CREATED);
