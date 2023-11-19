@@ -13,6 +13,14 @@ public interface CountryService {
      */
     List<Country> getAllCountry();
 
+
+    /**
+     *
+     * @param code
+     * @return List<Country>
+     * Gets all Country by CountryCode.
+     *
+     */
     List<Country> getAllCountryByCountryCode(String code);
 
 }
