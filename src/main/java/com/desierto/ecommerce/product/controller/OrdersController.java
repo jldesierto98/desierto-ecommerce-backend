@@ -19,12 +19,8 @@ public class OrdersController {
 
     private final OrderService orderService;
 
-    @GetMapping("/orderHistoryByEmail/{email}")
-    public ResponseEntity<List<OrderHistoryResponse>> getOrderHistory(@PathVariable("email") String email){
-        GetOrderHistoryRequest request = new GetOrderHistoryRequest();
-        request.setEmail(email);
-        request.setSize(5);
-        request.setPage(1);
+    @GetMapping("/orderHistory")
+    public ResponseEntity<List<OrderHistoryResponse>> getOrderHistory(@RequestBody GetOrderHistoryRequest request){
         return new ResponseEntity<>(orderService.getOrderByCustomerEmail(request), HttpStatus.OK);
     }
 
