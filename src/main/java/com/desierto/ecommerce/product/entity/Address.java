@@ -1,5 +1,6 @@
 package com.desierto.ecommerce.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,5 +34,6 @@ public class Address {
 
     @OneToOne
     @PrimaryKeyJoinColumn
-    private Orders order;
+    @JsonIgnore
+    private Order order;
 }

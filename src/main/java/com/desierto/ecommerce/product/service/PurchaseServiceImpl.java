@@ -2,7 +2,7 @@ package com.desierto.ecommerce.product.service;
 
 import com.desierto.ecommerce.product.entity.Customer;
 import com.desierto.ecommerce.product.entity.OrderItem;
-import com.desierto.ecommerce.product.entity.Orders;
+import com.desierto.ecommerce.product.entity.Order;
 import com.desierto.ecommerce.product.repository.CustomerRepository;
 import com.desierto.ecommerce.product.request.PurchaseRequest;
 import com.desierto.ecommerce.product.response.PurchaseResponse;
@@ -26,7 +26,7 @@ public class PurchaseServiceImpl implements PurchaseService{
     public PurchaseResponse purchaseProduct(PurchaseRequest purchaseRequest) {
 
 
-        Orders order = purchaseRequest.getOrders();
+        Order order = purchaseRequest.getOrders();
 
         String orderTrackingNumber = UUID.randomUUID().toString();
         order.setOrderTrackingNumber(orderTrackingNumber);
