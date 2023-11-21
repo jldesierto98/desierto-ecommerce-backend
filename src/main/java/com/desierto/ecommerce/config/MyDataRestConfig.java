@@ -1,9 +1,6 @@
 package com.desierto.ecommerce.config;
 
-import com.desierto.ecommerce.product.entity.Country;
-import com.desierto.ecommerce.product.entity.Product;
-import com.desierto.ecommerce.product.entity.ProductCategory;
-import com.desierto.ecommerce.product.entity.State;
+import com.desierto.ecommerce.product.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -54,6 +51,9 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
         // disable HTTP methods for State: PUT, POST and DELETE
         disableHttpMethodForClass(config.getExposureConfiguration()
                 .forDomainType(State.class), theUnsupportedActions);
+
+        disableHttpMethodForClass(config.getExposureConfiguration()
+                .forDomainType(Order.class), theUnsupportedActions);
 
         // call an internal helper method
         exposeIds(config);
