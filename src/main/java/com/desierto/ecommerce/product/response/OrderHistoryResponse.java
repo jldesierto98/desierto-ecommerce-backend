@@ -1,9 +1,6 @@
 package com.desierto.ecommerce.product.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,11 +9,12 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Builder
 public class OrderHistoryResponse {
 
     private String orderTrackingNumber;
     private BigDecimal totalPrice;
     private Integer totalQuantity;
-
+    private Date date;
 
 }
