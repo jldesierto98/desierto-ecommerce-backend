@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService{
 
         log.info("Executing query findByCustomerEmail for email: {}", request.getEmail());
 
-        List<Order> queriedUserOrders = ordersRepository.findByCustomerEmail(request.getEmail());
+        List<Order> queriedUserOrders = ordersRepository.findByCustomerEmail(request.getEmail(), pageable);
         List<OrderHistoryResponse> orderHistoryResponse = new ArrayList<>();
 
         queriedUserOrders.forEach(queriedOrder -> {

@@ -21,7 +21,8 @@ public interface OrdersRepository extends JpaRepository<Order, Long> {
 //    @Query("SELECT o FROM orders o WHERE o.customer.email = :email")
 //    List<Order> findAllOrdersByCustomerEmail(@Param("email") String email);
 
-    List<Order> findByCustomerEmail(String customerEmail);
+    List<Order> findByCustomerEmail(String customerEmail, Pageable pageable);
+
 
     List<Order> findByCustomerId(Long id);
 }
