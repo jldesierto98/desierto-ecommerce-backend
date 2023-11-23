@@ -6,10 +6,8 @@ import com.desierto.ecommerce.product.request.GetOrderHistoryRequest;
 import com.desierto.ecommerce.product.response.OrderHistoryResponse;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +24,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public List<OrderHistoryResponse> getOrderByCustomerEmail(GetOrderHistoryRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Pageable pageable = PageRequest.of(0, 10);
 
         log.info("Executing query findByCustomerEmail for email: {}", request.getEmail());
 
@@ -40,6 +38,8 @@ public class OrderServiceImpl implements OrderService{
                     .totalQuantity(queriedOrder.getTotalQuantity())
                     .date(queriedOrder.getDateCreated()).build());
         });
+
+        log.info("=======_____ Order History _____======= : {}", orderHistoryResponse.toString());
 
         return orderHistoryResponse;
     }

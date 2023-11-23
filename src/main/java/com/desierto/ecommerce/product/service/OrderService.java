@@ -3,7 +3,6 @@ package com.desierto.ecommerce.product.service;
 import com.desierto.ecommerce.product.entity.Order;
 import com.desierto.ecommerce.product.request.GetOrderHistoryRequest;
 import com.desierto.ecommerce.product.response.OrderHistoryResponse;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 

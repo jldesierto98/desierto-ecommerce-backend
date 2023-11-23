@@ -19,7 +19,7 @@ public class OrdersController {
 
     private final OrderService orderService;
 
-    @GetMapping("/orderHistory")
+    @PostMapping("/orderHistory")
     public ResponseEntity<List<OrderHistoryResponse>> getOrderHistory(@RequestBody GetOrderHistoryRequest request){
         return new ResponseEntity<>(orderService.getOrderByCustomerEmail(request), HttpStatus.OK);
     }
