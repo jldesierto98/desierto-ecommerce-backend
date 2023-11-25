@@ -16,7 +16,7 @@ public class SecurityConfig {
 
         http.authorizeRequests(configurer ->
                 configurer
-                        .antMatchers("/order/**")
+                        .antMatchers("/order")
                         .authenticated())
                 .oauth2ResourceServer()
                 .jwt();
@@ -27,6 +27,8 @@ public class SecurityConfig {
         // add content negotiation
         http.setSharedObject(ContentNegotiationStrategy.class,
                             new HeaderContentNegotiationStrategy());
+
+        http.csrf().disable();
 
         // use OKTA response for unauthorized response.
         Okta.configureResourceServer401ResponseBody(http);
