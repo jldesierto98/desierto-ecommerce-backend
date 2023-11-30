@@ -30,6 +30,8 @@ public class PaymentProcessingServiceImpl implements PaymentProcessingService{
         params.put("amount", paymentInfoDto.getAmount());
         params.put("currency",paymentInfoDto.getCurrency());
         params.put("payment_method_types", paymentMethodTypes);
+        params.put("description", "Desierto E-Commerce Purchase");
+        params.put("receipt_email", paymentInfoDto.getEmail());
 
 
         return PaymentIntent.create(params);

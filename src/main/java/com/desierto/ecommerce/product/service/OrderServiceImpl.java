@@ -24,7 +24,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public List<OrderHistoryResponse> getOrderByCustomerEmail(GetOrderHistoryRequest request) {
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, 20);
 
         log.info("Executing query findByCustomerEmail for email: {}", request.getEmail());
 
