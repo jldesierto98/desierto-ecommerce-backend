@@ -10,5 +10,6 @@ public class PaymentInfoDto {
     //Stripe handling of amount is int, lowest denomination of cent.
     private int amount;
     private String currency;
+    private String email;
 
 }
