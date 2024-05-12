@@ -27,6 +27,7 @@ public class ProductListServiceImpl implements ProductListService {
     private final ProductRepository productRepository;
     private List<ProductInCartVo> productsInCart = new ArrayList<>(); //temporary storage
     CartResponse cartResponse = new CartResponse();
+    private final int ONE_ITEM = 1;
 
 
     @Override
@@ -65,7 +66,7 @@ public class ProductListServiceImpl implements ProductListService {
         productInCart.setId(product.getId());
         productInCart.setName(product.getName());
         productInCart.setUnitPrice(product.getUnitPrice());
-        productInCart.setQuantityInCart(1);
+        productInCart.setQuantityInCart(ONE_ITEM);
         productInCart.setSubTotalPrice(product.getUnitPrice());
         productInCart.setImageUrl(product.getImageUrl());
 
@@ -74,7 +75,7 @@ public class ProductListServiceImpl implements ProductListService {
 
         ProductInCartVo existingProductInCart = cartMap.get(product.getId());
         if (existingProductInCart != null) {
-            existingProductInCart.setQuantityInCart(existingProductInCart.getQuantityInCart() + 1);
+            existingProductInCart.setQuantityInCart(existingProductInCart.getQuantityInCart() + ONE_ITEM);
             existingProductInCart.setSubTotalPrice(existingProductInCart.getUnitPrice()
                     .multiply(BigDecimal.valueOf(existingProductInCart.getQuantityInCart())));
         } else {
@@ -117,7 +118,7 @@ public class ProductListServiceImpl implements ProductListService {
                     tempProductInCart.setSubTotalPrice(tempProductInCart.getUnitPrice()
                             .multiply(BigDecimal.valueOf(tempProductInCart.getQuantityInCart())));
                 } else {
-                    tempProductInCart.setQuantityInCart(tempProductInCart.getQuantityInCart() - 1);
+                    tempProductInCart.setQuantityInCart(tempProductInCart.getQuantityInCart() - ONE_ITEM);
                     tempProductInCart.setSubTotalPrice(tempProductInCart.getUnitPrice()
                             .multiply(BigDecimal.valueOf(tempProductInCart.getQuantityInCart())));
                 }
@@ -134,7 +135,7 @@ public class ProductListServiceImpl implements ProductListService {
 
         cartResponse.setTotalQuantity(quantityAfterDecrement);
         cartResponse.setTotalPrice(totalPrice);
-        log.info("======= DECREMENT ITEM ID : ======== " + id);
+
         return cartResponse;
     }
 
@@ -151,10 +152,6 @@ public class ProductListServiceImpl implements ProductListService {
                 .filter(i -> Objects.equals(productsInCart.get(i).getId(), id))
                 .findFirst()
                 .orElse(-1);
-
-
-
-        log.info("========ITEM ID REMOVED FROM CART======= " + id);
 
          productsInCart.remove(index);
 
@@ -187,6 +184,8 @@ public class ProductListServiceImpl implements ProductListService {
                 .map(ProductInCartVo::getSubTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+
 
 }
 
