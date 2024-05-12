@@ -135,7 +135,7 @@ public class ProductListServiceImpl implements ProductListService {
 
         cartResponse.setTotalQuantity(quantityAfterDecrement);
         cartResponse.setTotalPrice(totalPrice);
-        log.info("======= DECREMENT ITEM ID : ======== " + id);
+
         return cartResponse;
     }
 
@@ -152,10 +152,6 @@ public class ProductListServiceImpl implements ProductListService {
                 .filter(i -> Objects.equals(productsInCart.get(i).getId(), id))
                 .findFirst()
                 .orElse(-1);
-
-
-
-        log.info("========ITEM ID REMOVED FROM CART======= " + id);
 
          productsInCart.remove(index);
 
